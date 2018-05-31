@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Test_8.Models.UserProfile>
+
+@{
+    ViewBag.Title = "List";
+}
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+@using (Html.BeginForm())
+{
+    <div class="container">
+        <center><h2>User Profile</h2></center>
+        <br />
+        <a class="btn btn-primary pull-right" href="Home/Create">Add Users</a>
+        <p>
+            Find by Name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+            <button type="submit" class="btn btn-primary">Search</button>
+        </p>
+        <br />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>
+                        @Html.ActionLink("Name", "List", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                    </th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Marital_Status</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ID</td>
+                        <td>@item.Name</td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone </td>
+
+                        <td>
+                            @if (item.Marital_Status)
+                            {
+                                <input type="checkbox" checked disabled>
+                            }
+                            else
+                            {
+                                <input type="checkbox" disabled>
+                            }
+                        </td>
+
+                        <td>@item.Country </td>
+                        <td>@item.State </td>
+                        <td>@item.Action
+                       
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <center>
+        <ul class="pagination">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li> <a href="@Url.Action("List", "Home", new { page = i })">@i</a></li>
+            }
+        </ul>
+    </center>
+
+}
